@@ -69,3 +69,4 @@ git push -u origin ten/chuc-nang
 ## 5. Lưu ý an toàn vì repo công khai
 
 Không đưa lên GitHub: mật khẩu, tệp `.db` có dữ liệu thật, khóa/chứng chỉ SSL (`*.key`, `*.pem`), `config/config.json`. Các mục này đã nằm trong `.gitignore`. Nếu lỡ commit thì báo cả nhóm để xử lý, không chỉ xóa file vì lịch sử Git vẫn còn.
+"# thuc-coffee" 
