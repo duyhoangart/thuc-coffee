@@ -1,0 +1,4 @@
+# Dự án chỉ dùng thư viện chuẩn của Python (socket, threading, ssl, sqlite3, tkinter, json).
+# Không cần cài thêm gói nào để chạy ứng dụng.
+# Gói dùng khi phát triển (tùy chọn):
+# pytest>=8.0

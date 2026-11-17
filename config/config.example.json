@@ -1,0 +1,11 @@
+{
+  "host": "0.0.0.0",
+  "port_lan": 5000,
+  "port_internet": 5001,
+  "heartbeat_interval_sec": 5,
+  "heartbeat_timeout_sec": 15,
+  "late_threshold_minutes": 10,
+  "db_path": "data/thuccoffee.db",
+  "ssl_cert": "certs/server.crt",
+  "ssl_key": "certs/server.key"
+}
