@@ -69,4 +69,68 @@ git push -u origin ten/chuc-nang
 ## 5. Lưu ý an toàn vì repo công khai
 
 Không đưa lên GitHub: mật khẩu, tệp `.db` có dữ liệu thật, khóa/chứng chỉ SSL (`*.key`, `*.pem`), `config/config.json`. Các mục này đã nằm trong `.gitignore`. Nếu lỡ commit thì báo cả nhóm để xử lý, không chỉ xóa file vì lịch sử Git vẫn còn.
-"# thuc-coffee" 
+
+## 6. Chạy ứng dụng
+
+Tại thư mục gốc dự án (sau khi đã làm bước 2):
+
+```bash
+copy config\config.example.json config\config.json   # chỉ làm lần đầu (macOS/Linux: cp)
+python run_server.py          # terminal 1: chạy server (tự tạo data/thuccoffee.db và dữ liệu mẫu)
+python run_client.py          # terminal 2: mở app, có thể mở nhiều cửa sổ để thử nhiều vai trò
+```
+
+Nếu client chạy trên máy khác trong LAN, sửa `server_address` trong `config/config.json` (hoặc nhập địa chỉ ở màn hình đăng nhập).
+
+**Tài khoản mẫu (chỉ để chạy thử, đổi mật khẩu khi dùng thật):**
+
+| Vai trò | Tên đăng nhập | Mật khẩu |
+| --- | --- | --- |
+| Admin | `admin` | `admin123` |
+| Chủ quán | `chuquan` | `chuquan123` |
+| Quản lý | `quanly` | `quanly123` |
+| Thu ngân | `thungan` | `thungan123` |
+| Phục vụ | `phucvu` | `phucvu123` |
+| Pha chế | `phache` | `phache123` |
+
+Khách tại quán: tab "Khách tại quán", chọn số bàn (không cần tài khoản). Khách đặt bàn từ xa: tab "Khách đặt bàn từ xa", bấm Đăng ký rồi đăng nhập.
+
+**Thử workflow 1 (đặt món):** mở 5 cửa sổ client: Khách bàn 1, Phục vụ, Pha chế, Thu ngân, Quản lý.
+Khách chọn món và gửi yêu cầu → Phục vụ chọn "Chuyển đơn cho bếp" → Pha chế bấm "Bắt đầu làm món", "Hoàn tất món" → Phục vụ nhận thông báo món sẵn sàng → Khách gửi yêu cầu thanh toán → Thu ngân "Xác nhận đã thu tiền" (chọn hình thức).
+
+**Thử workflow 2 (đặt bàn):** Khách đặt bàn từ xa đăng ký, đăng nhập, đặt bàn (giờ dạng `2026-12-01 18:30`) → Quản lý vào PH04 "Xử lý đặt bàn", chọn Xác nhận hoặc Từ chối → Khách xem kết quả, có thể hủy.
+
+## 7. Kiểm thử tự động
+
+```bash
+python -m unittest tests.test_workflow -v        # server: 2 workflow, phân quyền, cảnh báo trễ, đặt bàn, Admin
+xvfb-run -a python tests/gui_smoke.py            # Linux: mở thử mọi chức năng con của mọi vai trò (cần xvfb)
+```
+
+## 8. SSL/TLS cho cổng Internet (tùy chọn khi thử, cần khi triển khai)
+
+Tạo chứng chỉ tự ký (cần OpenSSL):
+
+```bash
+openssl req -x509 -newkey rsa:2048 -nodes -keyout certs/server.key -out certs/server.crt -days 365 -subj "/CN=thuccoffee"
+```
+
+Server tự bật SSL cho cổng Internet khi có `certs/server.crt` và `certs/server.key`. Khi đó đặt `"internet_ssl": true` trong `config/config.json` của client. Nếu không có chứng chỉ, server cảnh báo và chạy không mã hóa (chỉ dùng để thử).
+
+## 9. Phân hệ và mã nguồn
+
+| Phân hệ | Server (`server/handlers/`) | Client |
+| --- | --- | --- |
+| PH01 Quản trị hệ thống | `ph01_quantri.py`, `common.py` | `client/modules.py` |
+| PH02 Quản lý thực đơn | `ph02_thucdon.py` | `client/modules.py` |
+| PH03 Đặt món & Đơn hàng | `ph03_donhang.py` | `client/order_panel.py` |
+| PH04 Đặt bàn & Tài khoản khách | `ph04_datban.py` | `client/modules.py` |
+| PH05 Pha chế (Bếp) | `ph05_phache.py` | `client/modules.py` |
+| PH06 Phục vụ | `ph06_phucvu.py` | `client/modules.py` |
+| PH07 Thanh toán & Công nợ | `ph07_thanhtoan.py` | `client/modules.py` |
+| PH08 Giám sát vận hành | `ph08_giamsat.py` | `client/modules.py` |
+| PH09 Thống kê & Ca làm việc | `ph09_thongke.py` | `client/modules.py` |
+| PH10 Nhân sự & Tài khoản | `ph10_nhansu.py` | `client/modules.py` |
+| PH11 Điều hành chung (Chủ quán) | `ph11_dieuhanh.py` | `client/modules.py` |
+
+Thêm một chức năng mới: viết hàm `@handler("TÊN_MESSAGE", "PHxx", roles)` trong file handler của phân hệ, rồi thêm một dòng panel trong `client/modules.py`.
