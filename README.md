@@ -50,6 +50,19 @@ thuc-coffee/
 ├── data/        # Tệp .db cục bộ (không đưa lên Git)
 └── certs/       # Chứng chỉ SSL cục bộ (không đưa lên Git)
 ```
+## Phân công theo mô hình MVC
+
+Đề tài: Hệ thống quản lý đặt món, đặt bàn và thanh toán theo thời gian thực cho quán cà phê Thức Coffee.
+Giảng viên hướng dẫn: TS. Đặng Hùng Vĩ. Lớp 23CT3, khóa 2023.
+
+| Thành viên | Phần phụ trách | Thư mục / tệp |
+| --- | --- | --- |
+| Phùng Thị Thanh Huyền | Model | `database/` (schema.sql, db.py, security.py), `server/services.py` |
+| Nguyễn Minh Vương | Controller lõi | `protocol/`, `server/core.py`, `server/server.py`, `server/handlers/common.py`, `server/handlers/ph01_quantri.py` |
+| Nguyễn Thị Thục Ngân | Controller nghiệp vụ | `server/handlers/ph02` đến `ph11` |
+| Võ Phương Nhi | View | `client/` (app.py, modules.py, ui_kit.py, order_panel.py, net.py) |
+
+Chi tiết công việc từng người xem tại `docs/PhanCong_MVC_ThucCoffee.docx`.
 
 ## 4. Quy trình làm việc với Git
 
