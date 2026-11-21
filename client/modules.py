@@ -216,3 +216,7 @@ def modules_for(role_key):
         if fl:
             out.append((code, name, fl))
     return out
+
+
+
+# Phụ trách: Nhi (View) - giao diện 11 phân hệ
