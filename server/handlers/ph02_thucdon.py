@@ -63,3 +63,4 @@ def menu_set_available(ctx, s, p):
     ctx.db.execute("UPDATE menu_items SET available=? WHERE id=?", (1 if p.get("available", True) else 0, int(p["id"])))
     _changed(ctx)
     return {}
+# Phụ trách: Ngân (Controller nghiệp vụ) - xử lý nghiệp vụ thực đơn
