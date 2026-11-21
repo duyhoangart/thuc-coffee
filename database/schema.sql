@@ -72,3 +72,4 @@ CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
 );
+	-- Phụ trách: Huyền (Model) - thiết kế CSDL SQLite
