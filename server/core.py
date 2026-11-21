@@ -177,3 +177,5 @@ def serve_client(ctx, sock, addr, channel):
     finally:
         ctx.remove(s)
         log.info("Đóng kết nối #%s", s.id)
+
+# Phụ trách: Vương (Controller lõi) - phân quyền, điều phối message
